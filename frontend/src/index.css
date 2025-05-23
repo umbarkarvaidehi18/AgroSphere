@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-50: #edf7ed;
+  --primary-100: #d1ebd2;
+  --primary-200: #b3deb5;
+  --primary-300: #8fcf95;
+  --primary-400: #6cbf75;
+  --primary-500: #4caf50;
+  --primary-600: #3d9c42;
+  --primary-700: #2d7738;
+  --primary-800: #1e5f2a;
+  --primary-900: #0f471c;
+
+  --secondary-50: #f6f0e6;
+  --secondary-100: #e8d9bf;
+  --secondary-200: #d9c19a;
+  --secondary-300: #c9a874;
+  --secondary-400: #ba914f;
+  --secondary-500: #a47829;
+  --secondary-600: #8b5a2b;
+  --secondary-700: #724124;
+  --secondary-800: #59321d;
+  --secondary-900: #402415;
+
+  --accent-50: #ebf5ff;
+  --accent-100: #c9e2ff;
+  --accent-200: #a7ceff;
+  --accent-300: #85baff;
+  --accent-400: #63a7ff;
+  --accent-500: #4193ff;
+  --accent-600: #3b82f6;
+  --accent-700: #2e6bda;
+  --accent-800: #205bb9;
+  --accent-900: #134097;
+
+  --success-500: #22c55e;
+  --warning-500: #f59e0b;
+  --error-500: #ef4444;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  @apply bg-gray-50 text-gray-900;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-bold;
+}
+
+.page-container {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* Custom animations */
+.grow-animation {
+  animation: growFromBottom 0.5s ease-out;
+}
+
+@keyframes growFromBottom {
+  0% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+    opacity: 0;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+    opacity: 1;
+  }
+}
+
+/* Button Styles */
+.btn {
+  @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+}
+
+.btn-secondary {
+  @apply bg-secondary-600 text-white hover:bg-secondary-700 focus:ring-secondary-500;
+}
+
+.btn-accent {
+  @apply bg-accent-600 text-white hover:bg-accent-700 focus:ring-accent-500;
+}
+
+.btn-outline {
+  @apply border-2 border-primary-600 text-primary-600 hover:bg-primary-50 focus:ring-primary-500;
+}
+
+/* Card Styles */
+.card {
+  @apply bg-white rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg;
+}
+
+/* Section Styles */
+.section {
+  @apply py-12 md:py-16 lg:py-24;
+}
