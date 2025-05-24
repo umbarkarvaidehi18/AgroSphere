@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../navigation/Navbar";
 import Footer from "../navigation/Footer";
-import NewsletterSignup from "../common/NewsletterSignup";
+
+import NewsletterSignup from "../common/NewsLetterSignup";
 
 const MainLayout = () => {
   const [isScrolled, setIsScrolled] = useState(false);
