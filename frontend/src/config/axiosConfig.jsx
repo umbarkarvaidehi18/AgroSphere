@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// Base URL will be automatically picked based on the environment
+// Base URL is fetched from the .env file
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api", // Localhost URL in development
-  // Production URL
+  baseURL: import.meta.env.VITE_API_BASE_URL, // Use the environment variable
   withCredentials: true, // If your backend needs cookies or authorization headers
 });
 
