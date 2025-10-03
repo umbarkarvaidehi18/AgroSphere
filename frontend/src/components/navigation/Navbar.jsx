@@ -65,13 +65,6 @@ const Navbar = ({ isScrolled, isTransparent }) => {
           <div className="hidden md:flex md:items-center">
             <div className="flex space-x-1">
               {/* Navigation Items */}
-              <NavItem
-                to="/"
-                label="Home"
-                textClass={textClass}
-                isActive={activeDropdown === "home"}
-                onClick={() => toggleDropdown("home")}
-              />
 
               <NavItem
                 to="/about"
@@ -80,13 +73,12 @@ const Navbar = ({ isScrolled, isTransparent }) => {
                 isActive={activeDropdown === "about"}
                 onClick={() => toggleDropdown("about")}
               />
-
               <NavItem
-                to="/features"
-                label="Features"
+                to="/AImodels"
+                label="AI Models"
                 textClass={textClass}
-                isActive={activeDropdown === "features"}
-                onClick={() => toggleDropdown("features")}
+                isActive={activeDropdown === "about"}
+                onClick={() => toggleDropdown("about")}
               />
 
               <NavDropdown

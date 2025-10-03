@@ -41,8 +41,8 @@ const Pricing = () => {
     },
     {
       name: "Growth Plan",
-      price: "$15",
-      amount: 15,
+      price: "$199",
+      amount: 199,
       description: "Advanced tools for growing operations.",
       features: [
         "Full AI Suite",
@@ -54,8 +54,8 @@ const Pricing = () => {
     },
     {
       name: "Enterprise",
-      price: "$50",
-      amount: 50,
+      price: "Pricing Available on Request",
+      amount: null,
       description: "Tailored solutions for large-scale farms.",
       features: [
         "Dedicated Onboarding",
@@ -92,6 +92,8 @@ const Pricing = () => {
     setIsSubmitting(true);
     if (plan.planId === "farmer") {
       handleFreePlan();
+    } else if (plan.planId === "enterprise") {
+      window.location.href = "/contact";
     } else {
       try {
         const token = localStorage.getItem("token");
@@ -284,112 +286,114 @@ const Pricing = () => {
         </div>
       </section>
 
-      {showPayPalModal && selectedPlan && (
-        <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+      {showPayPalModal &&
+        selectedPlan &&
+        selectedPlan.planId !== "enterprise" && (
           <motion.div
-            className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full relative"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <button
-              onClick={() => setShowPayPalModal(false)}
-              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
-              aria-label="Close payment modal"
+            <motion.div
+              className="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full relative"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3 }}
             >
-              <FaTimes size={24} />
-            </button>
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Pay for {selectedPlan.name}
-            </h2>
-            {error && (
-              <div className="mb-4 p-3 bg-red-50 text-red-500 rounded-md text-sm">
-                {error}
-              </div>
-            )}
-            <p className="text-gray-600 mb-4">
-              Pay {selectedPlan.price} for {selectedPlan.name}.
-            </p>
-            {paypalClientId && selectedPlan.paypalOrderId ? (
-              <PayPalScriptProvider
-                options={{
-                  clientId: paypalClientId,
-                  components: "buttons",
-                  intent: "capture",
-                }}
+              <button
+                onClick={() => setShowPayPalModal(false)}
+                className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+                aria-label="Close payment modal"
               >
-                <PayPalButtons
-                  createOrder={(data, actions) => {
-                    console.log("Creating PayPal order:", selectedPlan);
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: selectedPlan.amount.toString(),
-                            currency_code: "USD",
-                          },
-                          description: `Payment for AgroSphere ${selectedPlan.name}`,
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={async (data, actions) => {
-                    try {
-                      console.log("PayPal order approved:", data.orderID);
-                      await actions.order.capture();
-                      const token = localStorage.getItem("token");
-                      console.log("Token for confirm:", token);
-                      if (!token) {
-                        throw new Error("No authentication token found");
-                      }
-                      const response = await apiRequest(
-                        "POST",
-                        "/payments/confirm",
-                        {
-                          orderId: data.orderID,
-                          planId: selectedPlan.planId,
-                        },
-                        {
-                          headers: { Authorization: `Bearer ${token}` },
-                        }
-                      );
-                      console.log("Confirm payment response:", response);
-                      setCurrentPlan(selectedPlan.planId);
-                      setShowPayPalModal(false);
-                      setShowSuccessPopup(true);
-                      setTimeout(() => setShowSuccessPopup(false), 4000);
-                    } catch (err) {
-                      console.error(
-                        "Payment confirmation error:",
-                        JSON.stringify(err.response?.data, null, 2)
-                      );
-                      setError(
-                        err.response?.data?.error ||
-                          "Failed to confirm payment. Please try again or contact support."
-                      );
-                    }
-                  }}
-                  onError={(err) => {
-                    console.error("PayPal Button error:", err);
-                    setError("Payment processing failed. Please try again.");
-                  }}
-                />
-              </PayPalScriptProvider>
-            ) : (
-              <p className="text-red-500">
-                PayPal is not configured or payment is not available. Please
-                contact support.
+                <FaTimes size={24} />
+              </button>
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Pay for {selectedPlan.name}
+              </h2>
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 text-red-500 rounded-md text-sm">
+                  {error}
+                </div>
+              )}
+              <p className="text-gray-600 mb-4">
+                Pay {selectedPlan.price} for {selectedPlan.name}.
               </p>
-            )}
+              {paypalClientId && selectedPlan.paypalOrderId ? (
+                <PayPalScriptProvider
+                  options={{
+                    clientId: paypalClientId,
+                    components: "buttons",
+                    intent: "capture",
+                  }}
+                >
+                  <PayPalButtons
+                    createOrder={(data, actions) => {
+                      console.log("Creating PayPal order:", selectedPlan);
+                      return actions.order.create({
+                        purchase_units: [
+                          {
+                            amount: {
+                              value: selectedPlan.amount.toString(),
+                              currency_code: "USD",
+                            },
+                            description: `Payment for AgroSphere ${selectedPlan.name}`,
+                          },
+                        ],
+                      });
+                    }}
+                    onApprove={async (data, actions) => {
+                      try {
+                        console.log("PayPal order approved:", data.orderID);
+                        await actions.order.capture();
+                        const token = localStorage.getItem("token");
+                        console.log("Token for confirm:", token);
+                        if (!token) {
+                          throw new Error("No authentication token found");
+                        }
+                        const response = await apiRequest(
+                          "POST",
+                          "/payments/confirm",
+                          {
+                            orderId: data.orderID,
+                            planId: selectedPlan.planId,
+                          },
+                          {
+                            headers: { Authorization: `Bearer ${token}` },
+                          }
+                        );
+                        console.log("Confirm payment response:", response);
+                        setCurrentPlan(selectedPlan.planId);
+                        setShowPayPalModal(false);
+                        setShowSuccessPopup(true);
+                        setTimeout(() => setShowSuccessPopup(false), 4000);
+                      } catch (err) {
+                        console.error(
+                          "Payment confirmation error:",
+                          JSON.stringify(err.response?.data, null, 2)
+                        );
+                        setError(
+                          err.response?.data?.error ||
+                            "Failed to confirm payment. Please try again or contact support."
+                        );
+                      }
+                    }}
+                    onError={(err) => {
+                      console.error("PayPal Button error:", err);
+                      setError("Payment processing failed. Please try again.");
+                    }}
+                  />
+                </PayPalScriptProvider>
+              ) : (
+                <p className="text-red-500">
+                  PayPal is not configured or payment is not available. Please
+                  contact support.
+                </p>
+              )}
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
 
       {showSuccessPopup && (
         <motion.div

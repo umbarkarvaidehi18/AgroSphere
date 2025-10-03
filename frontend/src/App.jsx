@@ -43,6 +43,7 @@ import FieldData from "./pages/dashboard/FieldData";
 import Marketplace from "./pages/dashboard/Marketplace";
 import Sustainability from "./pages/dashboard/Sustainability";
 import Training from "./pages/dashboard/Training";
+import AImodels from "./pages/public/AImodels";
 
 function App() {
   const location = useLocation();
@@ -76,6 +77,7 @@ function App() {
         <Route path="pricing" element={<Pricing />} />
         <Route path="globalImpact" element={<GlobalImpact />} />
         <Route path="careers" element={<Careers />} />
+        <Route path="AImodels" element={<AImodels />} />
       </Route>
 
       {/* Auth Routes */}
